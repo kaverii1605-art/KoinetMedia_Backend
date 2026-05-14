@@ -1,0 +1,113 @@
+package com.koinetmedia.KoinetMedia.security;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+public class SecurityConfig {
+
+    private final JwtFilter jwtFilter;
+
+    public SecurityConfig(JwtFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
+//demo
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.configurationSource(request -> {
+                org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
+
+                config.setAllowCredentials(true);
+
+                config.addAllowedOrigin("https://blueaxismedia.in");
+                config.addAllowedOrigin("https://blueaxis-frontend.vercel.app");
+                config.addAllowedOrigin("https://newdeployment-two.vercel.app");
+                config.addAllowedOrigin("http://localhost:5500");
+                config.addAllowedOriginPattern("http://localhost:4200");
+                config.addAllowedOrigin("http://127.0.0.1:5500");
+                config.addAllowedOrigin("http://localhost:5501");
+                config.addAllowedOrigin("http://127.0.0.1:5501");
+                config.addAllowedOrigin("http://localhost:4200");
+                
+
+                config.addAllowedHeader("*");
+                config.addAllowedMethod("*");
+             
+
+                return config;
+            }))
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/send-reset-link").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/reset-password").permitAll()
+
+                .requestMatchers(
+                    "/",
+                    "/api/register",
+                    "/api/login",
+                    "/api/postContact",
+                    
+                    "/api/send-reset-link",
+                    "/api/send-reset-link/**",
+
+                    "/api/update-password",
+                    "/api/update-password/**",
+                    "/api/test",
+                    "/api/blogs",
+                    "/api/articles",
+                    "/api/infographics",
+                   
+                    "/api/getblogs",
+                    "/api/blogs",
+                    
+                    "/api/getblog/**",
+                    "/api/getarticles",
+                    "/api/getarticle/**",
+                    "/api/getinfo",
+                    "/api/getinfographic/**",
+                    "/api/forgot-password-test",
+                    
+                    "/api/version"
+                ).permitAll()
+
+                // keep these authenticated if they are admin pages
+                .requestMatchers(
+                    "/api/addblog",
+                    "/api/addarticle",
+                    "/api/addinfo"
+                ).authenticated()
+
+                .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+}

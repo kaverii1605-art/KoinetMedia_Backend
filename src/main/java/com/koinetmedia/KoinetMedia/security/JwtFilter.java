@@ -1,0 +1,73 @@
+package com.koinetmedia.KoinetMedia.security;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@Component
+public class JwtFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
+            throws ServletException, IOException {
+
+        String path = request.getServletPath();
+
+        if (
+        		 request.getMethod().equals("OPTIONS") ||
+        		    path.equals("/api/register") ||
+        		    path.equals("/api/login") ||
+        		    path.equals("/api/postContact") ||
+        		    path.equals("/api/send-reset-link") ||
+        		    path.equals("/api/update-password") ||
+        		    path.equals("/api/test") ||
+        		    path.startsWith("/api/get") ||
+        		    path.startsWith("/api/send-reset-link") ||
+        		    path.startsWith("/api/update-password") ||
+        		    path.equals("/api/test") ||
+        		    path.equals("/api/getblogs") ||
+        		    path.equals("/api/blogs") ||
+        		    path.startsWith("/api/getblog") ||
+        		    
+        		    path.equals("/api/version") ||
+        		    
+        		    path.startsWith("/api/getarticles") ||
+        		    path.startsWith("/api/getarticle") ||
+        		    path.startsWith("/api/getinfo") ||
+        		    path.startsWith("/api/getinfographic")
+        ) {
+        	filterChain.doFilter(request, response);
+            return;
+        }
+
+        String header = request.getHeader("Authorization");
+
+        if (header != null && header.startsWith("Bearer ")) {
+
+            String token = header.substring(7);
+            String email = jwtUtil.extractEmail(token);
+
+            UsernamePasswordAuthenticationToken auth =
+                    new UsernamePasswordAuthenticationToken(email, null, new ArrayList<>());
+
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+
+        filterChain.doFilter(request, response);
+    }
+}
