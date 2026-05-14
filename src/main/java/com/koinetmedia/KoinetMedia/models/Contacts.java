@@ -1,0 +1,77 @@
+package com.koinetmedia.KoinetMedia.models;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "contact")
+
+public class Contacts {
+
+
+    private String id;
+
+    private String name;
+    private String email;
+    private String phone;
+
+    private String companyName;
+
+    private String message;
+    
+    public Contacts() {}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	@Override
+	public String toString() {
+		return "Contacts [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", companyName="
+				+ companyName + ", message=" + message + "]";
+	}
+
+	
+}
