@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.koinetmedia.KoinetMedia.models.User;
 import com.koinetmedia.KoinetMedia.repository.UserRepo;
+import com.koinetmedia.KoinetMedia.security.JwtUtil;
 import com.koinetmedia.KoinetMedia.services.UserService;
 
 
@@ -21,6 +22,10 @@ import com.koinetmedia.KoinetMedia.services.UserService;
 @CrossOrigin("*")
 public class Usercotroller {
 
+	
+	@Autowired
+	private JwtUtil jwtUtil;
+	
 	@Autowired
 	private UserRepo repo;
 	
@@ -40,23 +45,27 @@ public class Usercotroller {
 	    
 	    
 	    @PostMapping("/login")
-	    public ResponseEntity<Map<String,String>> login(@RequestBody User user){
+	    public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
 
-	        User existingUser = repo.findByEmailAndPassword(user.getEmail(), user.getPassword());
+	        User existingUser =
+	                repo.findByEmailAndPassword(user.getEmail(), user.getPassword());
 
-	        Map<String,String> response = new HashMap<>();
+	        Map<String, String> response = new HashMap<>();
 
-	        if(existingUser != null){
+	        if (existingUser != null) {
 
-	            response.put("message","Login successful");
+	            // Generate JWT Token
+	            String token = jwtUtil.generateToken(existingUser.getEmail());
+
+	            response.put("message", "Login successful");
+	            response.put("token", token);
 
 	            return ResponseEntity.ok(response);
 
 	        } else {
 
-	            response.put("message","Invalid email or password");
+	            response.put("message", "Invalid email or password");
 
 	            return ResponseEntity.status(401).body(response);
 	        }
-
-	    }}
+	    }
