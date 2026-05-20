@@ -28,7 +28,7 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(request -> {
                 org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
 
-                config.setAllowCredentials(true);
+                config.setAllowCredentials(false);
 
                 config.addAllowedOrigin("https://blueaxismedia.in");
                 config.addAllowedOrigin("https://blueaxis-frontend.vercel.app");
