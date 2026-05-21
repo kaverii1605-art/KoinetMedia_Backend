@@ -30,8 +30,7 @@ public class SecurityConfig {
 
                 config.setAllowCredentials(false);
 
-                config.addAllowedOrigin("https://blueaxismedia.in");
-                config.addAllowedOrigin("https://blueaxis-frontend.vercel.app");
+                config.addAllowedOrigin("https://koinetmedia.com/");
                 config.addAllowedOrigin("https://newdeployment-two.vercel.app");
                 config.addAllowedOrigin("http://localhost:5500");
                 config.addAllowedOriginPattern("http://localhost:4200");
