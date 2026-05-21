@@ -30,7 +30,7 @@ public class SecurityConfig {
 
                 config.setAllowCredentials(false);
 
-                config.addAllowedOrigin("https://koinetmedia.com/");
+                config.addAllowedOrigin("https://koinetmedia.com");
                 config.addAllowedOrigin("https://newdeployment-two.vercel.app");
                 config.addAllowedOrigin("http://localhost:5500");
                 config.addAllowedOriginPattern("http://localhost:4200");
@@ -90,7 +90,7 @@ public class SecurityConfig {
                     "/api/addblog",
                     "/api/addarticle",
                     "/api/addinfo"
-                ).authenticated()
+                ).permitAll()
 
                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .anyRequest().authenticated()
