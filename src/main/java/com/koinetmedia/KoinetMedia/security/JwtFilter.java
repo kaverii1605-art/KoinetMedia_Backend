@@ -42,6 +42,9 @@ public class JwtFilter extends OncePerRequestFilter {
         		    path.equals("/api/test") ||
         		    path.equals("/api/getblogs") ||
         		    path.equals("/api/blogs") ||
+        		    path.equals("/api/addinfo") ||
+        		    path.equals("/api/addblog") ||
+        		    path.equals("/api/addarticle") ||
         		    path.startsWith("/api/getblog") ||
         		    
         		    path.equals("/api/version") ||
