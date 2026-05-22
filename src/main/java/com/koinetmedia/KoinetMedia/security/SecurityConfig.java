@@ -31,7 +31,7 @@ public class SecurityConfig {
                 config.setAllowCredentials(false);
 
                 config.addAllowedOrigin("https://koinetmedia.com");
-                config.addAllowedOrigin("https://newdeployment-two.vercel.app");
+                config.addAllowedOrigin("https://koinet-media-frontend.vercel.app");
                 config.addAllowedOrigin("http://localhost:5500");
                 config.addAllowedOriginPattern("http://localhost:4200");
                 config.addAllowedOrigin("http://127.0.0.1:5500");
