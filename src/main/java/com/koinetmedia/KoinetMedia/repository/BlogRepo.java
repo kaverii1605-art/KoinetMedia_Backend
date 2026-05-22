@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.koinetmedia.KoinetMedia.models.Blog;
 
 @Repository
-public interface BlogRepo extends MongoRepository<Blog, Long>{
+public interface BlogRepo extends MongoRepository<Blog, String>{
 
 }
