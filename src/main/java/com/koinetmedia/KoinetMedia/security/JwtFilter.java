@@ -70,6 +70,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
+        
+        
+        if (path.equals("/api/health")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         filterChain.doFilter(request, response);
     }
