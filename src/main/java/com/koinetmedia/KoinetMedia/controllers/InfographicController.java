@@ -8,12 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.koinetmedia.KoinetMedia.models.Blog;
 import com.koinetmedia.KoinetMedia.models.Infographic;
 import com.koinetmedia.KoinetMedia.repository.InfographicRepo;
 import com.koinetmedia.KoinetMedia.services.InfographicService;
@@ -51,5 +53,11 @@ public class InfographicController {
 	            @RequestParam int page,
 	            @RequestParam int size) {
 	        return inforepo.findAll(PageRequest.of(page - 1, size));
+	    }
+	    
+	    @GetMapping("/getinfo/{id}")
+	    public Infographic getBlogById(@PathVariable String id) {
+	        return inforepo.findById(id)
+	                .orElseThrow(() -> new RuntimeException("Blog not found with id: " + id));
 	    }
 }

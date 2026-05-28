@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.koinetmedia.KoinetMedia.models.Infographic;
 
 @Repository
-public interface InfographicRepo extends MongoRepository<Infographic, Long> {
+public interface InfographicRepo extends MongoRepository<Infographic, String> {
 
 }
