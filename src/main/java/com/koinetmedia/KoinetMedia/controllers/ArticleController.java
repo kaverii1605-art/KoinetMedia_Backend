@@ -6,12 +6,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.koinetmedia.KoinetMedia.models.Articles;
+import com.koinetmedia.KoinetMedia.models.Blog;
 import com.koinetmedia.KoinetMedia.repository.ArticleRepo;
 import com.koinetmedia.KoinetMedia.services.ArticleService;
 
@@ -40,4 +42,10 @@ public class ArticleController {
 	public List<Articles> getarticle(){
 		return articlerepo.findAll();
 	}
+	
+	 @GetMapping("/getarticle/{id}")
+	    public Articles getArticleById(@PathVariable String id) {
+	        return articlerepo.findById(id)
+	                .orElseThrow(() -> new RuntimeException("Blog not found with id: " + id));
+	    }
 }
