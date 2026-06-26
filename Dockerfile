@@ -3,8 +3,7 @@ FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-COPY mvnw .
-COPY .mvn ./.mvn
+
 
 RUN mvn clean package -DskipTests
 
