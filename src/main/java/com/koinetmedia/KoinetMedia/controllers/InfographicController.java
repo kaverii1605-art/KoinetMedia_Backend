@@ -44,6 +44,7 @@ public class InfographicController {
 	    @GetMapping("/getinfo")
 	    public List<Infographic> getInfo(){
 
+	    	
 	    return inforepo.findAll();
 
 	    }
